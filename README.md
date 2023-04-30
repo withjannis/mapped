@@ -1,5 +1,5 @@
 # mapped
-This tool, mainly src/main.js is a client to to analyse instagram profiles followers and followings.
+This tool, mainly src/main.js, is a script to analyse the followers and followings of an instagram profile.
 
 ## usage
 Insert it into the developer console in your browser opened at instagram.com.
@@ -28,7 +28,7 @@ the result contains the following json structure
                 "username": "",
                 "fullName": "",
                 "profilePicUrl": ""
-			}
+            }
         ],
         "following": [
             {
@@ -36,7 +36,7 @@ the result contains the following json structure
                 "username": "",
                 "fullName": "",
                 "profilePicUrl": ""
-			}
+            }
         ]
     },
     "relations": {
