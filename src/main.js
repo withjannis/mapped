@@ -9,7 +9,7 @@ async function queryUserId(username) {
 };
 
 async function queryRelated(userId, relation) {
-    switch(relation){
+    switch (relation) {
         case "followers":
             url = `https://www.instagram.com/graphql/query/?query_hash=c76146de99bb02f6415203be841dd25a&variables=`
             edgeProperty = "edge_followed_by"
@@ -19,42 +19,42 @@ async function queryRelated(userId, relation) {
             edgeProperty = "edge_follow"
             break;
     };
-   var RelatedList = [];
+    var relatedList = [];
     hasNext = true;
     after = null;
-    while(hasNext){
-        const RelationProperties = await fetch(
+    while (hasNext) {
+        const relationProperties = await fetch(
             url +
-              encodeURIComponent(
+            encodeURIComponent(
                 JSON.stringify({
-                  id: userId,
-                  include_reel: true,
-                  fetch_mutual: true,
-                  first: 50,
-                  after: after,
+                    id: userId,
+                    include_reel: true,
+                    fetch_mutual: true,
+                    first: 50,
+                    after: after,
                 })
-              )
+            )
         );
-        const RelationPropertiesJson = await RelationProperties.json();
-        hasNext = RelationPropertiesJson.data.user[edgeProperty].page_info.has_next_page;
-        after = RelationPropertiesJson.data.user[edgeProperty].page_info.end_cursor;
+        const relationPropertiesJson = await relationProperties.json();
+        hasNext = relationPropertiesJson.data.user[edgeProperty].page_info.has_next_page;
+        after = relationPropertiesJson.data.user[edgeProperty].page_info.end_cursor;
 
         //console.log(followersPropertiesJson.data.user.edge_followed_by.edges)
-        for (var i = 0; i < RelationPropertiesJson.data.user[edgeProperty].edges.length; i++) {
-            RelatedList.push(
+        relationPropertiesJson.data.user[edgeProperty].edges.forEach(element => {
+            relatedList.push(
                 {
-                    "id": RelationPropertiesJson.data.user[edgeProperty].edges[i].node.id,
-                    "username": RelationPropertiesJson.data.user[edgeProperty].edges[i].node.username,
-                    "fullName": RelationPropertiesJson.data.user[edgeProperty].edges[i].node.full_name,
-                    "profilePicUrl": RelationPropertiesJson.data.user[edgeProperty].edges[i].node.profile_pic_url,
+                    "id": element.node.id,
+                    "username": element.node.username,
+                    "fullName": element.node.full_name,
+                    "profilePicUrl": element.node.profile_pic_url,
                 }
             )
-        }
+        });
     };
-    return RelatedList;
+    return relatedList;
     //console.log(followersList)
 };
-sterializeRelatedList = function(relatedList){
+sterializeRelatedList = function (relatedList) {
     var serializedList = [];
     relatedList.forEach(element => {
         serializedList.push(element.username);
@@ -62,16 +62,16 @@ sterializeRelatedList = function(relatedList){
     return serializedList;
 };
 
-findIDontFollowThemBack = async function(followerList, followingList){
+findIDontFollowThemBack = async function (followerList, followingList) {
     followerList = sterializeRelatedList(followerList);
     followingList = sterializeRelatedList(followingList);
     //i do not follow them back
     //in follower list, but not in following list
-    const iDontFollowThemBack= followerList.filter(el => !followingList.includes(el));
+    const iDontFollowThemBack = followerList.filter(el => !followingList.includes(el));
     return iDontFollowThemBack;
 };
 
-findTheyDontFollowMeBack = async function(followerList, followingList){
+findTheyDontFollowMeBack = async function (followerList, followingList) {
     followerList = sterializeRelatedList(followerList);
     followingList = sterializeRelatedList(followingList);
     //they are not following me back
