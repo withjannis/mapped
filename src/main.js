@@ -79,6 +79,16 @@ findTheyDontFollowMeBack = async function (followerList, followingList) {
     const theyDontFollowMeBack = followingList.filter(el => !followerList.includes(el));
     return theyDontFollowMeBack;
 };
+
+findMutuals = async function (followerList, followingList) {
+    followerList = sterializeRelatedList(followerList);
+    followingList = sterializeRelatedList(followingList);
+    //i do not follow them back
+    //in follower list, but not in following list
+    const mutuals = followerList.filter(el => followingList.includes(el));
+    return mutuals;
+};
+
 fullData = {};
 const username = "withjannis";
 // to find the userId of a user
@@ -95,6 +105,7 @@ fullData["related"]["following"] = following;
 fullData["relation"] = {};
 fullData["relation"]["iDontFollowThemBack"] = await findIDontFollowThemBack(followers, following);
 fullData["relation"]["theyDontFollowMeBack"] = await findTheyDontFollowMeBack(followers, following);
+fullData["relation"]["mutuals"] = await findMutuals(followers, following);
 console.log(`informations for ${username} are:`)
 console.log(fullData)
 console.log(`to get the data write copy(fullData)`)
