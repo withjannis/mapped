@@ -25,23 +25,30 @@ the result contains the following data
     "related": {
         "followers": [
             {
-
+                "id": "",
+                "username": "",
+                "fullName": "",
+                "profilePicUrl": ""
 			}
         ],
         "following": [
             {
-			
+                "id": "",
+                "username": "",
+                "fullName": "",
+                "profilePicUrl": ""
 			}
         ]
     },
     "relations": {
         "iDontFollowThemBack": [
+            ""
         ],
         "theyDontFollowMeBack": [
-
+            ""
         ],
         "mutuals": [
-
+            ""
         ]
     }
 }
