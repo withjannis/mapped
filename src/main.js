@@ -54,7 +54,7 @@ async function queryRelated(userId, relation) {
     return relatedList;
     //console.log(followersList)
 };
-sterializeRelatedList = function (relatedList) {
+function sterializeRelatedList (relatedList) {
     var serializedList = [];
     relatedList.forEach(element => {
         serializedList.push(element.username);
@@ -62,7 +62,7 @@ sterializeRelatedList = function (relatedList) {
     return serializedList;
 };
 
-findIDontFollowThemBack = async function (followerList, followingList) {
+async function findIDontFollowThemBack (followerList, followingList) {
     followerList = sterializeRelatedList(followerList);
     followingList = sterializeRelatedList(followingList);
     //i do not follow them back
@@ -71,7 +71,7 @@ findIDontFollowThemBack = async function (followerList, followingList) {
     return iDontFollowThemBack;
 };
 
-findTheyDontFollowMeBack = async function (followerList, followingList) {
+async function findTheyDontFollowMeBack (followerList, followingList) {
     followerList = sterializeRelatedList(followerList);
     followingList = sterializeRelatedList(followingList);
     //they are not following me back
@@ -80,7 +80,7 @@ findTheyDontFollowMeBack = async function (followerList, followingList) {
     return theyDontFollowMeBack;
 };
 
-findMutuals = async function (followerList, followingList) {
+async function findMutuals (followerList, followingList) {
     followerList = sterializeRelatedList(followerList);
     followingList = sterializeRelatedList(followingList);
     //i do not follow them back
