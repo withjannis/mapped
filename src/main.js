@@ -4,8 +4,8 @@ async function queryUserId(username) {
     );
     const userPropertiesJson = await userProperties.json();
     //console.log("test") 
-    //console.log(userPropertiesJson.users[0].user.pk_id)
-    return Promise.resolve(userPropertiesJson.users[0].user.pk_id);
+    //console.log(userPropertiesJson.users[1].user.pk_id)
+    return userPropertiesJson.users[0].user.pk_id;
 };
 
 async function queryRelated(userId, relation) {
@@ -54,7 +54,7 @@ async function queryRelated(userId, relation) {
     return relatedList;
     //console.log(followersList)
 };
-function sterializeRelatedList (relatedList) {
+function sterializeRelatedList(relatedList) {
     var serializedList = [];
     relatedList.forEach(element => {
         serializedList.push(element.username);
@@ -62,7 +62,7 @@ function sterializeRelatedList (relatedList) {
     return serializedList;
 };
 
-async function findIDontFollowThemBack (followerList, followingList) {
+async function findIDontFollowThemBack(followerList, followingList) {
     followerList = sterializeRelatedList(followerList);
     followingList = sterializeRelatedList(followingList);
     //i do not follow them back
@@ -71,7 +71,7 @@ async function findIDontFollowThemBack (followerList, followingList) {
     return iDontFollowThemBack;
 };
 
-async function findTheyDontFollowMeBack (followerList, followingList) {
+async function findTheyDontFollowMeBack(followerList, followingList) {
     followerList = sterializeRelatedList(followerList);
     followingList = sterializeRelatedList(followingList);
     //they are not following me back
@@ -80,7 +80,7 @@ async function findTheyDontFollowMeBack (followerList, followingList) {
     return theyDontFollowMeBack;
 };
 
-async function findMutuals (followerList, followingList) {
+async function findMutuals(followerList, followingList) {
     followerList = sterializeRelatedList(followerList);
     followingList = sterializeRelatedList(followingList);
     //i do not follow them back
@@ -88,25 +88,29 @@ async function findMutuals (followerList, followingList) {
     const mutuals = followerList.filter(el => followingList.includes(el));
     return mutuals;
 };
+async function main() {
+    fullData = {};
+    //insert username here
+    const username = "withjannis";
+    // to find the userId of a user
+    const userId = await queryUserId(username)
+    console.log(`username for ${username} is: ${userId}`)
+    // to find the followers of a user
+    const followers = await queryRelated(userId, "followers")
+    const following = await queryRelated(userId, "following")
+    fullData["username"] = username;
+    fullData["userId"] = userId;
+    fullData["related"] = {};
+    fullData["related"]["followers"] = followers;
+    fullData["related"]["following"] = following;
+    fullData["relations"] = {};
+    fullData["relations"]["iDontFollowThemBack"] = await findIDontFollowThemBack(followers, following);
+    fullData["relations"]["theyDontFollowMeBack"] = await findTheyDontFollowMeBack(followers, following);
+    fullData["relations"]["mutuals"] = await findMutuals(followers, following);
+    console.log(`informations for ${username} are:`)
+    console.log(fullData)
+    console.log(`to get the data write copy(fullData)`)
 
-fullData = {};
-//insert username here
-const username = "withjannis";
-// to find the userId of a user
-const userId = await queryUserId(username)
-console.log(`username for ${username} is: ${userId}`)
-// to find the followers of a user
-const followers = await queryRelated(userId, "followers")
-const following = await queryRelated(userId, "following")
-fullData["username"] = username;
-fullData["userId"] = userId;
-fullData["related"] = {};
-fullData["related"]["followers"] = followers;
-fullData["related"]["following"] = following;
-fullData["relations"] = {};
-fullData["relations"]["iDontFollowThemBack"] = await findIDontFollowThemBack(followers, following);
-fullData["relations"]["theyDontFollowMeBack"] = await findTheyDontFollowMeBack(followers, following);
-fullData["relations"]["mutuals"] = await findMutuals(followers, following);
-console.log(`informations for ${username} are:`)
-console.log(fullData)
-console.log(`to get the data write copy(fullData)`)
+
+}
+main();
