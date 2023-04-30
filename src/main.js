@@ -90,6 +90,7 @@ async function findMutuals (followerList, followingList) {
 };
 
 fullData = {};
+//insert username here
 const username = "withjannis";
 // to find the userId of a user
 const userId = await queryUserId(username)
@@ -102,10 +103,10 @@ fullData["userId"] = userId;
 fullData["related"] = {};
 fullData["related"]["followers"] = followers;
 fullData["related"]["following"] = following;
-fullData["relation"] = {};
-fullData["relation"]["iDontFollowThemBack"] = await findIDontFollowThemBack(followers, following);
-fullData["relation"]["theyDontFollowMeBack"] = await findTheyDontFollowMeBack(followers, following);
-fullData["relation"]["mutuals"] = await findMutuals(followers, following);
+fullData["relations"] = {};
+fullData["relations"]["iDontFollowThemBack"] = await findIDontFollowThemBack(followers, following);
+fullData["relations"]["theyDontFollowMeBack"] = await findTheyDontFollowMeBack(followers, following);
+fullData["relations"]["mutuals"] = await findMutuals(followers, following);
 console.log(`informations for ${username} are:`)
 console.log(fullData)
 console.log(`to get the data write copy(fullData)`)
