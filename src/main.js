@@ -110,7 +110,5 @@ async function main() {
     console.log(`informations for ${username} are:`)
     console.log(fullData)
     console.log(`to get the data write copy(fullData)`)
-
-
 }
 main();
